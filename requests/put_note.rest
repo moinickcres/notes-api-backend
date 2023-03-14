@@ -1,0 +1,7 @@
+PUT http://localhost:3001/notes/6410a7f529056032f4fd1c39
+Content-Type: application/json 
+
+{
+    "content": "Colorado alcahueta",
+    "important": true
+}
