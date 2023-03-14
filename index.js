@@ -9,6 +9,7 @@ const app = express()
 const logger = require('./loggerMiddleware')
 
 const Note = require('./models/Note')
+
 const notFound = require('./middleware/notFound.js')
 const handleErrors = require('./middleware/handleErrors.js')
 
@@ -49,7 +50,7 @@ app.get('/notes/:id', (request, response, next) => {
             response.status(404).end();
         } 
     })
-    .catch(error => next(error))
+    .catch(err => next(err))
 })  
 
 app.put('/notes/:id', (request, response, next) => {
@@ -65,7 +66,7 @@ app.put('/notes/:id', (request, response, next) => {
     Note.findByIdAndUpdate(id, newNoteInfo, {new : true})
         .then(result => {
             response.json(result)
-        })
+        }).catch(err => next(err))
 
 })
 
@@ -75,13 +76,13 @@ app.delete('/notes/:id', (request, response, next) => {
 
     Note.findByIdAndRemove(id).then(result => {
         response.status(204).end()
-    }).catch(error => next(error))
+    }).catch(err => next(err))
 
     response.status(204).end();
 })
 
 
-app.post('/notes', (request, response) => {
+app.post('/notes', (request, response, next) => {
     const note = request.body;
     
     //const ids = note.map(note => note.id);
